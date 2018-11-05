@@ -5,10 +5,7 @@ CodeChef API Hackathon powered by Alibaba Cloud ( TOP 15 )
 A messaging and problem sharing environment is also created along with contest newsletter subscription with phone and email id and code compilation
 
 
-presentation:
+presentation: https://docs.google.com/presentation/d/1WNR0vqYCPO9roncOkqhuabZN08eVft4-wBn4UinODI8/edit?usp=sharing
 
-https://docs.google.com/presentation/d/1WNR0vqYCPO9roncOkqhuabZN08eVft4-wBn4UinODI8/edit?usp=sharing
-
-Video:
-https://drive.google.com/drive/folders/1Cw0N_Vttg1OLAh7Nrfw46JpzC-iibdDd?usp=sharing
+Video:https://drive.google.com/drive/folders/1Cw0N_Vttg1OLAh7Nrfw46JpzC-iibdDd?usp=sharing
 
