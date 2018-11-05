@@ -1,0 +1,144 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+<div style="float:right;">
+    <% if(CurrentUser){ %>
+        <button  type="button" class="btn-outline-info" id="share">share</button>
+        <% } %>
+  
+        <button class="btn-outline-dark"><a href="/compiler">Compile</a></button>
+</div>
+<div id="shareDetails" class="row"></div>
+
+
+<div class="container-fluid">
+
+<div class="problemheader">
+
+</div>
+<div class="problembody">
+
+</div>
+</div>
+
+<script>
+    
+        var user = <%- JSON.stringify(CurrentUser) %>+"";
+   
+    
+      console.log(user);
+    $(".problemheader").children().remove();
+    $(".problembody").children().remove();
+var urlParams = new URLSearchParams(window.location.search);
+ var code = urlParams.get('code');
+ $.ajax({
+url:location.origin+"/problems/api/problemcode?code="+code,
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+   console.log(data);
+   var json =JSON.parse(data.body);
+   var problemcodevalue =json.result.data.content.problemCode;
+   var problemnamevalue =json.result.data.content.problemName;
+   var problembodyvalue =json.result.data.content.body;
+    $(".problemheader").append('<h2>'+problemnamevalue+'</h2>&nbsp;- &nbsp;'+problembodyvalue);
+    $(".problembody").append(problembodyvalue);
+
+}
+     
+   
+
+}
+);
+
+
+
+$("#share").on("click",function(){
+    $('#shareDetails').children().remove();
+
+
+    var userarray="";
+
+$.ajax({
+url:location.origin+"/problems/api/userdatabase",
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+console.log(data);
+data.forEach(function(friend){
+   if(user.username!=friend.username){
+         
+       userarray+='<option>'+friend.username+'<option>';
+   }
+  
+});
+
+
+  $('#shareDetails').append('<div class="col-md-8"> </div><div class="card col-md-3"><div class="form-row"><label>To:</label><select class="selectpicker" id="sender" data-live-search="true">'+userarray+'</select></div><br><div class="form-row"><label>Share Message:</label><textarea name="tomsg" rows=4 id="msgtext">'+window.location.href+'</textarea></div><br><div class="form-row"><button class="btn btn-primary" id="shared">Share!!</button></div></div>');   
+$('.selectpicker').selectpicker('refresh');
+$('#shareDetails').toggle();
+}
+}
+);
+
+$('#shareDetails').on("click","#shared",function(){
+
+  var sender= $('#sender').val();
+  var message = $('#msgtext').val();
+  console.log(message+"  "+sender);
+
+
+
+   $.ajax({
+url:location.origin+"/sendmessage",
+type:"GET",
+dataType: 'json',
+data:{
+    "friend":sender,
+    "msg":message,
+    "status":"sent"
+},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+    console.log(data);
+
+   
+        }
+       
+    });
+
+ 
+    location.reload(true);
+
+
+
+})
+
+
+
+
+
+    
+  
+    
+});
+
+
+
+ 
+
+
+</script>
+
+
+<% include partials/footer.ejs %>
+

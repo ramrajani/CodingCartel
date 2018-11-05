@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Exo+2:400,800|Roboto+Slab" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="shortcut icon" href="https://png.icons8.com/metro/1600/source-code.png" type="image/png"/><title>Coding Cartel</title>
+    <link rel="stylesheet" href="home.css">
+    
+  </head>
+  <body style="height:100%;overflow-y: auto;">
+   
+   <div class="wrapper">
+   	<nav id="sidebar" >
+   		<div class="sidebar-header" >
+   			<h3>Topics</h3>
+   		</div>
+   		
+   		<ul class="list-unstyled components">
+          <li class="active">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Data Structures</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+              <li>
+                <a href="/data?topic=datastructures&subtopic=array">Array</a>
+              </li>
+              <li>
+                <a href="/data?topic=datastructures&subtopic=stack">Stack</a>
+              </li>
+             <li>
+               <a href="/data?topic=datastructures&subtopic=queue">Queue</a>
+             </li>
+             <li>
+               <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trees</a>
+               <ul class="collapse list-unstyled" id="pageSubmenu">
+                 <li>
+                   <a href="/data?topic=datastructures&subtopic=binarytrees">Binary Trees</a>
+                 </li>
+ 
+               </ul> 
+             </li>
+              <li>
+                 <a href="/data?topic=datastructures&subtopic=graphs">Graphs</a>
+              </li>
+        </ul>
+       <li class="active">
+                <a href="#firse" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">sorting</a>
+        <ul class="collapse list-unstyled" id="firse">
+              <li>
+                <a href="/data?topic=sorting&subtopic=insertion_sort">Insertion Sort</a>
+              </li>
+              <li>
+                <a href="/data?topic=sorting&subtopic=selection_sort">Selection Sort</a>
+              </li>
+              <li>
+                <a href="/data?topic=sorting&subtopic=merge_sort">Merge Sort</a>
+              </li>
+             <li>
+               <a href="/data?topic=sorting&subtopic=quick_sort">Quick Sort</a>
+             </li>
+              <li>
+                 <a href="/data?topic=sorting&subtopic=bubble_sort">Bubble Sort</a>
+              </li>
+        </ul>
+       </li>
+        </ul>
+   	</nav>
+   	
+   	<div class="content" style="width:100%">
+   		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+   		
+   		<button type="button" id="sidebarCollapse" class="btn btn-info">
+   			<i class="fa fa-align-justify"></i> <span></span>
+   		</button>
+   		
+  <!--<a class="navbar-brand" href="#">Navbar</a> -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="container-fluid ">
+        <div class="navbar-header">
+          <img src="https://png.icons8.com/metro/1600/source-code.png" class="navbar-brand" height=30px width=30px style="margin:0 auto;">
+            <a class="navbar-brand" href="/">CodingCartel</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav navbar-nav mr-auto">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item active">
+                  <a class="nav-link" href="/contests">Contests</a>
+              </li>
+              <li class="nav-item active">
+                  <a class="nav-link" href="/compiler">Compiler</a>
+              </li>
+              <li class="nav-item active">
+                  <a class="nav-link" href="/profile">Profile</a>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav ml-auto">
+              <li>
+                <form class="form-inline my-2 my-lg-0" action="/usernamedb" method="GET">
+                  <select class="selectpicker" id="sendername" data-live-search="true" name="username"></select>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+              </li>
+
+         
+              
+  	
+  
+   

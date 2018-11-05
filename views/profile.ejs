@@ -1,0 +1,265 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+
+<div class="container-fluid emp-profile">
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-img">
+                <img id="profileimage"src="https://lh3.googleusercontent.com/-yo-B5GBEe-s/W7DkIhb78aI/AAAAAAAACGo/eBglj4J5W4g5UZe8sAtAlMSftbZ4wWvtACL0BGAYYCw/h300/profile1.png" alt="" >
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="profile-head">
+                        <h5>
+                            <span id="name"></span>
+                        </h5>
+                        <h6>
+                            <span id="occupation1"></span>
+                        </h6>
+                        <p class="proile-rating">Codechef RANKINGS : <span id="band"></span></p>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link" id="hometab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">About</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="messagestab" data-toggle="tab"  role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="profile-edit-btn"><a href="/editprofile"> edit</a></button>
+        </div>
+    </div>
+       
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-work">
+                <p>Profiles</p>
+
+                <a href="codechef">Codechef Link</a><br/>
+                
+                <p>Personal Details</p>
+                <ul style="list-style-type:none; text-align: left; padding: 0px">
+                    <li ><strong>City:</strong> <span id="city"></span></li>
+                    <li><strong>State:</strong> <span id="state"></span></li>
+                    <li><strong>Country:</strong> <span id="country"></span></li>
+                    <li><strong>Occupation:</strong> <span id="occupation"></span></li>
+                    <li><strong>Organization:</strong> <span id="organization"></span></li>
+                </ul>
+            </div>
+        </div>
+                 
+        <div class="col-md-8">
+            <div class="tab-content profile-tab" id="myTabContent">  
+             </div> 
+            
+        </div>
+
+       </div> 
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<script>
+
+    var user = <%- JSON.stringify(CurrentUser) %>;
+    console.log(user);
+
+
+
+
+    $("a[href='codechef']").attr('href', 'https://www.codechef.com/users/'+user.username);
+if(user.image){
+    $("#profileimage").attr('src',user.image);
+}
+if(user.fullname){
+    $('#name').text(user.fullname);
+    $('#fullname').text(user.username);
+}
+if(user.city){
+    $('#city').text(user.city);
+
+}
+if(user.state){
+    $('#state').text(user.state);
+}
+if(user.country){
+    $('#country').text(user.country);
+}
+if(user.occupation){
+    $('#occupation').text(user.occupation);
+    $('#occupation1').text(user.occupation);
+    
+}
+if(user.organization){
+    $('#organization').text(user.organization);
+}
+if(user.band){
+    $('#band').text(user.band);
+}
+
+function  cont(){
+    
+    $('#myTabContent').children().remove();
+
+    var problemsection = '<section class="card card-inverse bg-light"><div class="card-body"><h5>Problems solved:</h5>';
+   
+        var problemdisplay ='';
+      if(user.problemsolved){
+        var i=0;
+         user.problemsolved.forEach(function(problem){
+    
+       i++;
+       
+       problemdisplay+='<section class="card card-inverse bg-light"><div class="card-body"><div class="row"><div class="col-md-12"><p>Problem no: '+i+'</p></div></div><div class="row"><div class="col-md-4">time:'+problem.time+ '</div><div class="col-md-4">code:'+  problem.problemcode+'</div><div class="col-md-4"><a href="/usercode?problemcode='+problem.problemcode+'" style="color:blue">see your code</a></div></div> </div> </section> ';
+   });
+
+
+
+      }  
+       var  userdetails='';
+    userdetails+='<div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab"><div class="row"><div class="col-md-6" ><label>User Id </></div><div class="col-md-6"><p>'+user.username+'</p></div></div><div class="row"><div class="col-md-6"><label>Name</label></div><div class="col-md-6"><p>'+user.fullname+'</p></div></div><div class="row"><div class="col-md-6"><label>Email</label></div><div class="col-md-6"><p>'+user.emailid+'</p></div></div><div class="row"><div class="col-md-6"><label>Profession</label></div><div class="col-md-6"><p>'+user.occupation+'</p></div></div></div>'+problemsection+problemdisplay;
+  
+     console.log(user);
+    $('#myTabContent').append(userdetails);
+
+
+  }
+
+
+cont();
+
+
+
+  $('#hometab').on("click",cont);
+
+  $("#messagestab").on("click",function(){
+    $('#myTabContent').children().remove();
+    
+    $('#myTabContent').append('<div class="row"><button id="sent" class="nav-link">Sent Messages</button><button id="received" class="nav-link">received Messages</button><button id="send" class="nav-link">Send a Message</button></div> <div class="tab-content profile-tab messagecontent"></div>');
+
+
+
+  });
+
+  $('#myTabContent').on('click','#sent',function(){
+       
+    $('.messagecontent').children().remove();
+     
+    var sentmessages="";
+     user.messages.forEach(function(message){
+        console.log(message);
+        if(message.status=="sent"){
+            sentmessages+='<div class="card"><div class="card-body"><div class="item"><div class="content"><a href="" class="header"><h6>Sent to: '+message.friend+'</h6></a><em>'+message.msg+'</em></div></div></div></div>';
+        }
+        
+     });
+    
+    $('.messagecontent').append(sentmessages);   
+  });
+
+
+  $('#myTabContent').on('click','#received',function(){
+    $('.messagecontent').children().remove();
+     var receivedmessages="";
+      user.messages.forEach(function(message){
+          console.log(message);
+         if(message.status=="received"){
+            receivedmessages+='<div class="card"><div class="card-body"><div class="item"><div class="content"><a href="" class="header"><h6>From : '+message.friend+'</h6></a><em>'+message.msg+'</em></div></div></div></div>';
+         }
+         
+      });
+     
+     $('.messagecontent').append(receivedmessages);   
+   });
+
+   
+  $('#myTabContent').on('click','#send',function(){
+     
+    $('.messagecontent').children().remove();
+    var userarray="";
+
+     $.ajax({
+url:location.origin+"/problems/api/userdatabase",
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+    console.log(data);
+    data.forEach(function(friend){
+        if(user.username!=friend.username){
+              
+            userarray+='<option>'+friend.username+'<option>';
+        }
+       
+    });
+
+   
+   $('.messagecontent').append('<select class="selectpicker" id="sender" data-live-search="true">'+userarray+'</select><textarea rows=3 cols=70 placeholder="newMessage" id="msgtext"></textarea><br><button class="btn btn-primary" id="sendmymessage">send</button>');   
+   $('.selectpicker').selectpicker('refresh');
+}
+}
+);
+});
+
+$('#myTabContent').on("click",".messagecontent #sendmymessage",function(){
+
+  var sender= $('#sender').val();
+  var message = $('#msgtext').val();
+  console.log(message+"  "+sender);
+  console.log()
+
+
+
+   $.ajax({
+url:location.origin+"/sendmessage",
+type:"GET",
+dataType: 'json',
+data:{
+    "friend":sender,
+    "msg":message,
+    "status":"sent"
+},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+    console.log(data);
+
+   
+        }
+       
+    });
+
+ alert('Message sent successfully');
+    location.reload(true);
+});
+    
+     
+     
+   
+
+
+</script>
+
+
+
+
+
+
+
+<% include partials/footer.ejs %>

@@ -1,0 +1,180 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+
+
+
+
+
+<!--textarea-->
+
+<div class ="container-fluid">
+
+        <% if(CurrentUser){ %>
+        <input type="text" id="problemname" placeholder="problem-name" required> 
+        <button id="save" class="btn btn-warning" style="float:right">save</button>
+        <% } %>  
+<div class="container timepass" style="padding-top: 2%">
+<h2>CODE HERE <button id="run" class="btn btn-success">RUN</button>
+<textarea rows=1 cols=7 id="time" name="timer" disabled class="float-right">
+    
+</textarea>
+    
+<select name="langname"  id="selectoption" class="selectpicker" data-live-search="true">
+
+
+
+</select>
+
+
+</h2>
+<textarea name="inputarea" id="sourcecode" class="editor" row="50000" col="5000" style="top: 10%;right: 0;bottom: 0;left: 0;height:400px;width: 45%;">
+ </textarea>
+ 
+<textarea name="outputarea" row="50000" col="5000" style="top: 10%;
+right: 0;
+bottom: 0;
+left: 0;
+height:400px;
+width: 45%;padding-left: 5px;background-color: black;
+  color: white;" id="output"></textarea>
+  <h4>standard input:</h4>
+  <textarea id="stdinput" row="10" col="5000" style="right: 0;bottom: 0;left: 0;height:50px;width: 45%;"></textarea>
+</div>
+
+</div>
+
+
+<script>
+
+$(function(){
+			var sec=0,hr=0,min=0,yo;
+		yo=setInterval(function timer(){
+			if(sec==59){
+				sec=0;
+				min=min+1;
+			}else{
+				sec++;
+			}
+			if(min==60){
+				min=0
+				hr=hr+1;
+			}
+			$("#time").val(hr+":"+min+":"+sec);
+		},1000);
+		$("#save").on("click",function(){
+				clearInterval(yo);
+			})
+		});
+		
+
+    $.ajax({
+url:location.origin+"/problems/api/languages",
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+  
+   var json =JSON.parse(data.body);
+   var lang=json.result.data.content;
+   console.log(lang);
+   var addlang ="";
+    lang.map(function(e){
+        addlang+='<option>'+e.shortName+'</option>';
+    });
+   
+    $("#selectoption").append(addlang);
+    $("#selectoption").selectpicker('refresh');
+}
+});
+
+    $("#run").on("click",function(){
+                 
+    var sourceCode =  $("textarea[name='inputarea']").val();
+    var language = $('#selectoption').val();
+    var input =  $("textarea[name='stdinput']").val();
+console.log(sourceCode+"    "+language+"    "+input);
+
+     $.ajax({
+url:location.origin+"/problems/api/compilecode",
+type:"GET",
+dataType: 'json',
+data:{
+     "sourceCode":sourceCode,
+     "language": language,
+     "input":input,
+            
+},
+success:function(data) {
+   console.log(data);
+  var json =JSON.parse(data.body);
+   console.log(json.result.data.output);
+   var outputres = json.result.data.output;
+$("textarea[name='outputarea']").val(outputres); 
+  
+
+}
+    
+   
+
+}
+);
+
+  
+    });  
+
+
+    $('#save').on("click",function(){
+     if($('#problemname').val()){
+        var sourcecode = $('#sourcecode').val();
+        var input = $('#stdinput').val();
+        var output = $('#output').val();
+        var language = $('#selectoption').val();
+        var problemcode=$('#problemname').val();
+        var timer=$("textarea#time").val();
+       $.ajax({
+url:location.origin+"/saveproblem",
+type:"GET",
+dataType: 'json',
+data:{
+    "sourcecode":sourcecode,
+    "input":input,
+    "output":output,
+    "language":language,
+    "problemcode":problemcode,
+    "timer":timer
+},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+    console.log(data);
+
+   
+        }
+       
+    });
+
+ alert('code saved successfully');
+          
+
+
+
+     }else{
+         alert('problem name required');
+     }    
+        
+    });
+  /*var code =  $("textarea[name='inputarea']").val();
+
+    console.log(code);
+   
+    */
+    
+    
+</script>
+
+
+<% include partials/footer.ejs %>

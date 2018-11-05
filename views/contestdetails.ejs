@@ -1,0 +1,47 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+<div class="container-fluid"><div id="contestdet">
+
+
+</div>
+</div>
+
+<script>
+    
+var urlParams = new URLSearchParams(window.location.search);
+ var code = urlParams.get('code');
+ $.ajax({
+url:location.origin+"/problems/api/contestcode?code="+code,
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+   console.log(data);
+   var json =JSON.parse(data.body);
+   console.log(json.result.data.content);
+   var contentname = json.result.data.content.name;
+   var starttime = json.result.data.content.startDate;
+   var endtime = json.result.data.content.endDate;
+   var announcementsdetail = json.result.data.content.announcements;
+    $("#contestdet").append('<h3>'+contentname+'<h3><br><h5>Start-time:'+starttime+'</h5>&nbsp;&nbsp;<h5>End-time:'+endtime+'</h5><br><h5>Announcements:<h5><br>'+announcementsdetail+'<br>For-More details:<a tagret="_blank" href="https://www.codechef.com/'+code+'"  style="color:blue">Click Here</a>');
+  
+
+}
+     
+   
+
+}
+);
+ 
+
+
+</script>
+
+
+
+
+
+<% include partials/footer.ejs %>

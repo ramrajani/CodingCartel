@@ -1,0 +1,21 @@
+<% if(!CurrentUser){ %>
+    <li class="nav-item active" style="padding-left:5px">
+        <button class="btn btn-outline-primary"><a href="/login">Login<i class="fa fa-user" aria-hidden="true"></i></a></button>
+    
+    </li>
+    <li class="nav-item active">
+        <button class="btn btn-outline-primary"><a href="/signup2">Sign Up<i class="fa fa-user-plus" aria-hidden="true"></i></a></button>
+    </li>
+   <% } else{ %>
+    <li class="nav-item active" style="padding-left:5px">
+            <button class="btn btn-outline-primary"><a href="/logout">Log Out</a></button>
+        
+        </li>
+     <% } %>
+
+
+  </ul>
+</div>
+</div>
+</nav>
+

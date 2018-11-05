@@ -1,0 +1,198 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+
+
+
+<style>
+.vl {
+    border-left: 6px solid green;
+    height: 500px;
+}
+</style>
+
+<div class="container-fluid">
+        <button class="btn-outline-dark"><a href="#pasttable">Past</a></button>
+        <button class="btn-outline-dark"><a href="#presenttable">Present</a></button>
+        <button class="btn-outline-dark"><a href="#futuretable">Future</a></button>
+        <button class="btn-outline-info float-right" id="subscribe">Subscribe</button>
+
+      
+  <div id="subscription" class="container row" style="margin: 5px;">
+            
+                
+            
+  </div>
+<div class="future" style="font-weight: normal;" style="display: none;">
+    Future Contests
+</div>
+<div class="present" style="font-weight: normal;">
+        Present Contests
+
+</div>
+<div class="past" style="font-weight: normal;">
+        Past Contests
+</div>
+</div>
+
+
+
+
+
+
+<script>
+    $("#subscribe").on("click",function(){
+        $('#subscription').toggle();
+        $('#subscription').children().remove();  
+        $("#subscription").append('<div class="col-md-6 card" id="emailidsub" class="card-body"><label for="email">Email:</label><br><input type="email" required placeholder="abc@gmail.com" class="form-control" name="email" id="emailto"><br><button  type="button" class="btn btn-primary" id="emailsubscribed">Submit</button></div><div class="col-md-6 card" id="phonesub" ><label for="phone">Phone no:</label><label>+91</label><input type="Number" required placeholder="9999999999" name="phone" class="form-control" id="phoneto"><br><button  class="btn btn-primary form-control" id="phone-subscribed">Submit</button></div>')
+       // $("#subscription #phonesub #phoneto").intlTelInput({utilsScript: "intl-tel-input-master/build/js/utils.js"});
+        
+    
+    })
+
+   $(".past").append('<table  id="pasttable" class="table table-sm table-hover"><tr class="table-primary"><th scope="col">CODE</th><th scope="col">NAME</th><th scope="col">START</th><th scope="col">END</th><th scope="col">View Details</th></tr></table>');
+    $(".present").append('<table  id="presenttable" class="table table-sm table-hover"><tr class="table-primary"><th scope="col">CODE</th><th scope="col">NAME</th><th scope="col">START</th><th scope="col">END</th><th scope="col">View Details</th></tr></table>');
+$(".future").append('<table  id="futuretable" class="table table-sm table-hover"><tr class="table-primary"><th scope="col">CODE</th><th scope="col">NAME</th><th scope="col">START</th><th scope="col">END</th><th scope="col">View Details</th></tr></table>');
+
+
+
+
+$("#subscription").on("click","#emailidsub #emailsubscribed",function(){
+    var emailto = $('#emailto').val()
+    console.log(emailto);
+    $.ajax({
+        url: location.origin+"/problems/api/subscribeemail?emailid="+emailto,
+        type: "GET",
+        dataType: 'json',
+        data:{},
+        headers:{
+            'Content-Type':'application/json'
+        },
+    success:function(data) {
+        console.log(data);
+        
+    }});
+    alert("You will receive updates about upcoming contests on your email");
+    $("#subscription").toggle();
+})
+
+
+$("#subscription").on("click","#phonesub #phone-subscribed",function(){
+    
+    var number = $("#subscription #phonesub #phoneto").val();
+    console.log(number);
+   
+   
+    $.ajax({
+        url: location.origin+"/problems/api/suscribephone?phone="+number,
+        type: "GET",
+        dataType: 'json',
+        data:{},
+        headers:{
+            'Content-Type':'application/json'
+        },
+    success:function(data) {
+        console.log(data);
+       
+    }});
+     alert("You will receive updates about upcoming contests on your phone");
+    $("#subscription").toggle();
+})
+
+//for future contests
+    $.ajax({
+url:location.origin+"/problems/api/contests?status=future",
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+   console.log(data);
+   var json =JSON.parse(data.body);
+   var value =json.result.data.content.contestList;
+   value.forEach(function(value){
+
+
+   $("#futuretable").append('<tr ><th scope="row">'+value.code+'</th><th scope="row">'+value.name+'</th><th scope="row">'+value.startDate+'</th><th scope="row">'+value.endDate+'</th><th scope="row"><button class="btn btn-primary"><a href="/contestdetails?code='+value.code+'">clickhere</a></button></th></tr>');
+    }) ;
+
+}
+    
+//set2 = new Set(Object.keys(json.result.data.content));
+//console.log(set2);
+   
+
+}
+);
+
+$.ajax({
+url:location.origin+"/problems/api/contests?status=present",
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+   console.log(data);
+   var json =JSON.parse(data.body);
+   var value =json.result.data.content.contestList;
+   value.forEach(function(value){
+
+
+   $("#presenttable").append('<tr ><th scope="row">'+value.code+'</th><th scope="row">'+value.name+'</th><th scope="row">'+value.startDate+'</th><th scope="row">'+value.endDate+'</th><th scope="row"><button class="btn btn-primary"><a href="/contestdetails?code='+value.code+'">clickhere</a></button></th></tr>');
+    }) ;
+
+}
+    
+//set2 = new Set(Object.keys(json.result.data.content));
+//console.log(set2);
+   
+
+}
+);
+
+$.ajax({
+url:location.origin+"/problems/api/contests?status=past",
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+   console.log(data);
+   var json =JSON.parse(data.body);
+   var value =json.result.data.content.contestList;
+   value.forEach(function(value){
+
+
+   $("#pasttable").append('<tr ><th scope="row">'+value.code+'</th><th scope="row">'+value.name+'</th><th scope="row">'+value.startDate+'</th><th scope="row">'+value.endDate+'</th><th scope="row"><button class="btn btn-primary"><a href="/contestdetails?code='+value.code+'">clickhere</a></button></th></tr>');
+    }) ;
+
+}
+    
+   
+
+}
+);
+
+
+$('#subscribe').on("click",function(){
+
+  
+
+
+
+
+});
+
+
+
+
+
+</script>
+
+
+<% include partials/footer.ejs %>

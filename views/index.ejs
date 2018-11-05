@@ -1,0 +1,127 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+<div class="container-fluid">
+    <button class="btn-outline-dark"><a href="#videosection">Videos</a></button>
+    <button class="btn-outline-dark"><a href="#problems">problems</a></button>
+
+    <tr>
+      <td><%- topic[0].subtitle[0].body %></td>
+      
+    </tr>
+    <div class="card" >
+        <h5 class="card-header">Videos</h5>
+        <div class="card-body" id="videosection">
+                       
+
+        </div>
+      </div>
+    </div>
+
+
+ 
+ <div class="card" id="problems">
+        <h5 class="card-header">Problems</h5>
+        <div class="card-body">
+
+
+       <div>
+            <select id="level" size="3" >
+                    <option class="btn btn-outline-dark">school</option>
+                    <option class="btn btn-outline-dark">easy</option>
+                    <option class="btn btn-outline-dark">medium</option>
+                    <option class="btn btn-outline-dark">hard</option>
+                    <option class="btn btn-outline-dark">challenge</option>
+                    <option class="btn btn-outline-dark">extcontest</option>
+                 </select>  
+           
+       </div>
+       <div class="problemsection"></div>    
+          <a href="#" class="btn btn-primary">Go to Top</a>
+        </div>
+      </div>
+    </div>
+
+<script>
+   var videosec = <%- JSON.stringify(topic[0].subtitle[0].youtubelink) %>;
+
+   videosec.forEach(function(videosec){
+      
+      $('#videosection').append('<iframe  src="'+videosec+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>&nbsp;');
+   })
+  
+
+
+
+ $('select').on('change',function(){
+     var level = this.value; 
+    console.log(this.value);
+  
+    var a = <%- JSON.stringify(topic[0].subtitle[0].tagname) %>;
+    var set1 =new Set();
+  a.forEach(function(a){
+    
+
+    $.ajax({
+url:location.origin+"/problems/api/tags?tagname="+a,
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+    var json =JSON.parse(data.body);
+console.log(json.status);
+var set3 = new Set(Object.keys(json.result.data.content));
+set1  = new Set([...set1, ...set3]);
+console.log(set1);
+
+}
+}
+);
+
+});
+    
+  
+  var set2;
+  $.ajax({
+url:location.origin+"/problems/api/category?cat="+level,
+type:"GET",
+dataType: 'json',
+data:{},
+headers: {
+'Content-Type':'application/json' 
+},
+success:function(data) {
+   console.log(data);
+   var json =JSON.parse(data.body);
+   var json2 =json.result.data.content;
+   var set2 = new Set(json2.map(function(problem){ return problem.problemCode;}))
+//set2 = new Set(Object.keys(json.result.data.content));
+//console.log(set2);
+console.log(set2);
+let intersection = new Set(
+    [...set1].filter(x => set2.has(x)));
+    console.log(intersection);
+    $('.problemsection').children().remove();
+    intersection.forEach(function(value){
+        
+        $(".problemsection").append('<li>'+value+'&nbsp;<span style="color:#00f;"><a href="/problems?code='+value+'">Solve</a></span></li>');
+    }) ; 
+    
+}
+}
+);
+
+ });
+
+
+
+
+
+
+
+
+</script>
+
+<% include partials/footer.ejs %>

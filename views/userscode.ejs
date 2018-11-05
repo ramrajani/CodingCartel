@@ -1,0 +1,72 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+
+<div class="container-fluid">
+    
+        <div class="col-md-3" >
+            <h6>Problem Code:<span id="viewproblemcode"></span></h6>
+
+       
+</div>
+    <div class ="container-fluid">
+        <form>
+            <div class="container timepass" style="padding-top: 2%">
+                <div class="row container">
+                    <select id="viewlangname" disabled>
+                        
+                    </select>
+                    <div class="col-md-9">          
+                    
+                    </div>
+                    <textarea rows=1 cols=7 id="timerr" name="timer" style="margin-left: 40px;" disabled class="float-right">
+    </textarea>
+                        <!--to herw-->
+
+    
+                </div>
+                
+            
+            
+            <textarea name="viewinputarea" class="editor" disabled row="50000" col="5000" style="top: 10%;right: 0;bottom: 0;left: 0;height:400px;width: 45%;" id="viewInputArea">
+             </textarea>
+             
+            <textarea name="viewoutputarea" row="50000" col="5000" style="top: 10%;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height:400px;
+            width: 45%;padding-left: 5px;background-color: black;
+              color: white;" disabled id="viewOutputArea">OUTPUT</textarea>
+              <h4>standard input:</h4>
+              <textarea id="viewstdinput" row="10" col="5000" disabled style="right: 0;bottom: 0;left: 0;height:50px;width: 45%;"></textarea>
+            </div>
+        </form>
+        </div>
+</div>
+</div>
+<script>
+ var user = <%- JSON.stringify(CurrentUser) %>;
+    console.log(user);
+    var problemcode =<%-JSON.stringify(problemcode) %>;
+console.log(problemcode);
+    var problemarray = user.problemsolved;
+    console.log(problemarray);
+    problemarray.forEach(function(problem){
+        if(problem.problemcode==problemcode){
+            $('#viewproblemcode').append(problem.problemcode);
+            $('#viewlangname').append('<option>'+problem.language+'</option>');
+            $('#viewInputArea').val(problem.sourcecode);
+            $('#viewOutputArea').val(problem.output);
+            $('#viewstdinput').val(problem.input);
+            $('#timerr').val(problem.time);
+            
+        }
+      
+    });
+
+
+
+</script>
+
+
+<% include partials/footer.ejs %>

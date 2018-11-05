@@ -1,0 +1,48 @@
+<% include partials/header.ejs %>
+<% include partials/middle.ejs %>
+<div clas="container-fluid">
+<div id="myprofile">
+    <div class="container jumbotron">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+            <h6>Username:</h6>
+        </div>
+        <div class="col-md-3">
+            <p><span id="friendshipuser"></span></p>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>            
+            <div class="col-md-3">
+                <h6>Fullname:</h6>
+            </div>
+            <div class="col-md-3">
+                <p><span id="friendshipname"></span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>            
+            <div class="col-md-3">
+                <h6>Organisation:</h6>
+            </div>
+            <div class="col-md-3">
+                <p><span id="friendshiporganization"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+
+var friendship = <%- JSON.stringify(FriendUser) %>;
+console.log(friendship[0].username);
+    
+   $('#friendshipuser').append(friendship[0].username);
+   $('#friendshipname').append(friendship[0].fullname);
+   $('#friendshiporganization').append(friendship[0].organization);
+    
+
+</script>
+
+<% include partials/footer.ejs %>
